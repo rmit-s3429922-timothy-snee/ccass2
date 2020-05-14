@@ -10,6 +10,7 @@ class Main extends Component {
             message: null
         }
         this.refreshUser = this.refreshUser.bind(this)
+
     }
 
     componentDidMount() {
@@ -27,31 +28,10 @@ class Main extends Component {
     }
     
     render() {
-        return (
-            <div className="container">
-                <h3>User</h3>
-                <div className="container">
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Username</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                this.state.user.map(
-                                    user =>
-                                        <tr key={user.id}>
-                                            <td>{user.id}</td>
-                                            <td>{user.usernameame}</td>
-                                        </tr>
-                                )
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+		return (
+            <ul>
+                {this.state.user.map(user => (<li>{user.username}</li>))}
+            </ul>
         );
     }
 }

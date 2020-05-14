@@ -1,14 +1,19 @@
 import React, { Component} from 'react';
-import Main from './component/Main';
 import './App.css';
-import ListRecipes from './component/ListRecipes';
+import Greeting from './component/Greeting';
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {isLoggedIn: false};
+  }
+
   render() {
     return (
       <>
-        <div className="container">
-          <Main />
+        <div>
+          <Greeting isLoggedIn={true}/>
         </div>
       </>
     );
