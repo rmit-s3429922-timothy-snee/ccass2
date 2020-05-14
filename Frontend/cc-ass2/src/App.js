@@ -1,13 +1,14 @@
 import React, { Component} from 'react';
-import RecipeTest from './component/recipeTest';
+import Main from './component/Main';
 import './App.css';
+import ListRecipes from './component/ListRecipes';
 
 class App extends Component {
   render() {
     return (
       <>
         <div className="container">
-          <RecipeTest />
+          <Main />
         </div>
       </>
     );

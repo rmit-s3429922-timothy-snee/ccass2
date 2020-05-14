@@ -1,4 +1,4 @@
-package rmitccassignment2.ccass2;
+package rmitccassignment2.ccass2.recipe;
 public class Recipe {
     
     private Long id;

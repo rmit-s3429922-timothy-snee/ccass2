@@ -1,4 +1,4 @@
-package rmitccassignment2.ccass2;
+package rmitccassignment2.ccass2.recipe;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PathVariable;
