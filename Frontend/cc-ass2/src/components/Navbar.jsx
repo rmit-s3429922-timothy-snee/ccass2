@@ -12,10 +12,16 @@ const NavBar = () =>
         <div>
             <Menu size='large'>
                 <Container>
-                    <Menu.Item as='a' active >
-                        <Link to={'/'} className="nav-link"> Home </Link>
+                    <Menu.Item as='a'><Link to={'/'} className="nav-link"> Home </Link>
                     </Menu.Item>
-                    <Menu.Item as='a' ><Link to={'/menuPlan'} className="nav-link">Menu plan</Link></Menu.Item>
+                    {
+                        isAuthenticated && (
+                            <>
+                            <Menu.Item as='a' ><Link to={'/profile'} className="nav-link">Profile</Link></Menu.Item>
+                            <Menu.Item as='a' ><Link to={'/menuPlan'} className="nav-link">Menu plan</Link></Menu.Item>
+                            </>
+                        )
+                    }
                     <Menu.Item as='a'>Company</Menu.Item>
                     <Menu.Item as='a'>Careers</Menu.Item>
                     <Menu.Item position='right'>

@@ -7,6 +7,7 @@ import Home from "./components/Home";
 import MenuPlan from "./components/MenuPlan";
 import Login from './components/Login';
 import { useAuth0 } from "./react-auth0-spa";
+import Profile from './components/Profile';
 
 class App extends Component {
     
@@ -25,6 +26,7 @@ class App extends Component {
                     <Switch>
                         <Route exact path='/' component={Home} />
                         <Route path='/menuPlan' component={MenuPlan} />
+                        <Route path='/profile' component={Profile} />
                     </Switch>
                 </header>
                 </div>
