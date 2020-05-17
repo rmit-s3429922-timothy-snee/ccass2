@@ -5,7 +5,7 @@ import {getMenuPlan} from "../services/GetRecipes";
 class MenuPlanSurvey extends React.Component {
     state = {
         menuSurvey: false,
-        showCustomCalorie: false,
+        caloriePreference: 'recommended',
         dietaryPreference: 'balanced',
         healthPreferences: {vegan: false, vegetarian: false, noAlcohol: false, noPeanut: false},
         calorie: {
@@ -16,8 +16,8 @@ class MenuPlanSurvey extends React.Component {
 
     }
 
-    handleCustomCalorie = (e, {checked}) => {
-        this.setState({showCustomCalorie: !this.state.showCustomCalorie})
+    handleCaloriePreference = (preference) => {
+        this.setState({caloriePreference: preference})
     }
     handleDietaryPreference = (name) => {
         this.setState({dietaryPreference: name})
@@ -143,13 +143,17 @@ class MenuPlanSurvey extends React.Component {
                 <Segment>
                     <Header as={'h4'}>Calorie intake</Header>
                     <div>
-                        <Checkbox label='Recommended (300-400 calories Breakfast , 500-700 calories Lunch and Dinner)'/>
+                        <Checkbox checked={this.state.caloriePreference === 'recommended'} onChange={() => {
+                            this.handleCaloriePreference('recommended')
+                        }}label='Recommended (300-400 calories Breakfast , 500-700 calories Lunch and Dinner)'/>
                     </div>
                     <div>
-                        <Checkbox checked={this.state.showCustomCalorie || false} onChange={this.handleCustomCalorie}
+                        <Checkbox checked={this.state.caloriePreference === 'custom'}  onChange={() => {
+                            this.handleCaloriePreference('custom')
+                        }}
                                   label='Custom'/>
                     </div>
-                    {this.state.showCustomCalorie && (<Segment>
+                    {this.state.caloriePreference ==='custom' && (<Segment>
                         <Header as={'h4'}>Custom Calories</Header>
                         <Item.Group>
                             <Item>

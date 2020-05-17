@@ -21,7 +21,7 @@ class MenuPlan extends React.Component {
                     menuItem: `Day ${this.state.menuPlan.indexOf(menu) +1 }`,
                     render: () => <Tab.Pane>
                         <Header as={'h3'}>Day {this.state.menuPlan.indexOf(menu) +1}</Header>
-                    <Card.Group>
+                    <Card.Group itemsPerRow={3}>
                         <Card>
                             <Image src={menu.Breakfast.recipe.image} wrapped ui={false} />
                             <Card.Content>
