@@ -80,7 +80,16 @@ class MenuPlanSurvey extends React.Component {
             calorie:this.state.calorie
         }
         const menuPlan = await getMenuPlan(data)
-        this.props.setMenuPlan(menuPlan)
+        let transformedMenuPlan =[]
+        for(let i=0; i< 7; i++){
+            let obj ={
+                Breakfast: menuPlan.Breakfast[i],
+                Lunch: menuPlan.Lunch[i],
+                Dinner: menuPlan.Dinner[i]
+            }
+            transformedMenuPlan.push(obj)
+        }
+        this.props.setMenuPlan(transformedMenuPlan)
 
 
     }
