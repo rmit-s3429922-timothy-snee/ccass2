@@ -61,7 +61,7 @@ class Home extends React.Component {
                 {this.state.recipeResult.title && (
                     <Segment>
                         <Dimmer active={this.state.loading}>
-                            <Loader indeterminate>Preparing Files</Loader>
+                            <Loader indeterminate>Loading...</Loader>
                         </Dimmer>
                         {this.state.loading ?
                             <Placeholder style={{
