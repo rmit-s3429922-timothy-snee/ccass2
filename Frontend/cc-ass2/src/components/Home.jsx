@@ -84,7 +84,7 @@ class Home extends React.Component {
                             <Header textAlign={"center"}>{this.state.recipeResult.title}</Header>}
                             <Button.Group>
                                 <Button primary> Save</Button>
-                                <a href={this.state.recipeResult.url}><Button>Go to recipe</Button></a>
+                                <a href={this.state.recipeResult.url} target="_blank"><Button>Go to recipe</Button></a>
                             </Button.Group>
                     </Segment>)}
             </Container>
