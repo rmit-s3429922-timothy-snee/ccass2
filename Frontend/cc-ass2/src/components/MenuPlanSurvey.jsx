@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container, Header, Button, Segment} from "semantic-ui-react";
+import {Container, Header, Segment} from "semantic-ui-react";
 
 class MenuPlanSurvey extends React.Component{
     state={
