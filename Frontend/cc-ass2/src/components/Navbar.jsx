@@ -23,8 +23,6 @@ const NavBar = () =>
                             </>
                         )
                     }
-                    <Menu.Item as='a'>Company</Menu.Item>
-                    <Menu.Item as='a'>Careers</Menu.Item>
                     <Menu.Item position='right'>
 
                     {!isAuthenticated && (

@@ -1,63 +1,102 @@
-import React, { useState } from 'react';
-import {Container, Header, Button, List, Segment, Form, Label, Input} from "semantic-ui-react";
-import Ingredients from './Ingredients';
+import React, { useState, useEffect } from "react";
+import { Container, Header, Button, Segment, Form, List} from "semantic-ui-react";
+import { useAuth0 } from "../react-auth0-spa";
+import PantryService from "../services/PantryService";
 
-class Pantry extends React.Component{
-    constructor(props) {
-        super(props);
+function Pantry() {
+	const { loading, user } = useAuth0();
+	const [state, setState] = useState({
+		showAddIngredient: false,
+		ingredientToAdd: [],
+		weightToAdd: [],
+		ingredients:[]
+	});
 
-        const ingredients = [
-            {name:"Chicken", weight: 200},
-            {name:"Pepper", weight: 50}
-        ];
+	useEffect(() => {
+		function updateIngredients() {
+			PantryService.retrievePantryItems(user.nickname)
+			.then((response) => {
+				setState({...state, ingredients: response.data});
+			});
+		};
 
-        this.state = {
-            showAddIngredient: true,
-            ingredientToAdd:[],
-            weightToAdd:[],
-            submittedIngredient:[],
-            submittedWeight:[],
-            ingredients
-        }
-    }
+		if(!loading) updateIngredients();
+	}, [loading, user]);
 
-    handleChange = (e, {name, value}) => this.setState({[name]:value})
-    
-    handleSubmit = (e) => {
-        this.setState({ingredients: [...this.state.ingredients, {name:this.state.ingredientToAdd, weight:this.state.weightToAdd}]})
-    }
-   
-    render(){
-        const {ingredientToAdd, weightToAdd} = this.state;
-        return(
-            <Container>
-                <Header>Pantry</Header>
-                
-                <Button.Group>
-                    {!this.state.showAddIngredient && (
-                        <Button onClick={()=>{this.setState({showAddIngredient:true})}}>Add Ingredient</Button>
-                    )}
-                    {this.state.showAddIngredient && (
-                            <Button onClick={()=>{this.setState({showAddIngredient:false})}}>Hide</Button>
-                    )}
-                </Button.Group>
-                {
-                    this.state.showAddIngredient &&(
-                        <Segment>
-                            <Form onSubmit={this.handleSubmit}>
-                                <Form.Group>
-                                    <Form.Input onChange={this.handleChange} name='ingredientToAdd' value={ingredientToAdd} fluid label='Ingredient' placeholder='Ingredient' width={10}></Form.Input>
-                                    <Form.Input onChange={this.handleChange} name='weightToAdd' value={weightToAdd} fluid label='Weight (g)' placeholder='Weight (g)' width={6}></Form.Input>
-                                </Form.Group>
-                                <Form.Button content='Add'></Form.Button>
-                            </Form>
-                        </Segment>
-                    )
-                }
-                <Ingredients ingredients={this.state.ingredients} />
-            </Container>
-        )
-    }
+	if (loading || !user) {
+		return <div>Loading...</div>;
+	}
+
+	
+
+	const handleChange = (e, { name, value }) =>
+		setState({ ...state, [name]: value });
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		setState({...state, ingredients:[...state.ingredients, state.ingredients.push({"name":state.ingredientToAdd, "weight":state.weightToAdd+"g"})]});
+		PantryService.postPantryItems(user.nickname, state.ingredients)
+		.then(setState({...state}));
+	};
+
+	return (
+		<Container>
+			<Header>Pantry</Header>
+			<Button.Group>
+				{!state.showAddIngredient && (
+					<Button
+						onClick={() => {
+							setState({ ...state, showAddIngredient: true });
+						}}
+					>
+						Add Ingredient
+					</Button>
+				)}
+				{state.showAddIngredient && (
+					<>
+						<Segment>
+							<Form onSubmit={handleSubmit}>
+								<Form.Group>
+									<Form.Input
+										onChange={handleChange}
+										name="ingredientToAdd"
+										value={state.ingredientToAdd}
+										label="Ingredient"
+										placeholder="Ingredient..."
+									></Form.Input>
+									<Form.Input
+										onChange={handleChange}
+										name="weightToAdd"
+										value={state.weightToAdd}
+										label="Weight (g)"
+										placeholder="Weight (g)..."
+									></Form.Input>
+								</Form.Group>
+								<Form.Button type='submit' content="Add"></Form.Button>
+								<Button
+									onClick={() => {
+										setState({ ...state, showAddIngredient: false });
+									}}
+								>
+									Hide
+								</Button>
+							</Form>
+						</Segment>
+					</>
+				)}
+			</Button.Group>
+			<Segment>
+			<Header>Your ingredients</Header>
+			<List bulleted>
+				{state.ingredients.map((item) => (
+					<List.Item>
+						{item.weight} {item.name}
+					</List.Item>
+				))}
+			</List>
+			</Segment>
+		</Container>
+	);
 }
 
 export default Pantry;
