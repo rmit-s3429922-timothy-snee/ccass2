@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
 import {Route,  BrowserRouter as Router, Switch} from "react-router-dom";
-import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import MenuPlan from "./components/MenuPlan";
 import { useAuth0 } from "./react-auth0-spa";
@@ -9,6 +8,7 @@ import Profile from "./components/Profile";
 import history from "./utils/history";
 import PrivateRoute from './components/PrivateRoute';
 import Pantry from './components/Pantry';
+import NavBar from "./components/Navbar";
 
 class App extends Component {
     

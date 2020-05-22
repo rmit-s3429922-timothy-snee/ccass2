@@ -1,7 +1,11 @@
 package rmitccassignment2.ccass2;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.Map;
 
+import com.google.cloud.datastore.Entity;
+import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Bucket;
 
@@ -18,6 +22,7 @@ public class UserService {
 
     BucketResource bucket_resource;
     Bucket bucket;
+    DataStoreResource data_store_resource = new DataStoreResource();
 
     @RequestMapping(path = "/user/{username}")
     public String getPantry(@PathVariable("username") String username) {
@@ -38,12 +43,25 @@ public class UserService {
         BucketResource bucket_resource = new BucketResource();
         Bucket bucket = bucket_resource.getBucket();
         System.out.println(pantry);
-        
+
         bucket.create(username + ".json", pantry.getBytes("UTF-8"));
+    }
+
+    @RequestMapping(value = "/newmenuplan/{username}")
+    public Long addNewMenuPlan(@PathVariable("username") String username) {
+        return data_store_resource.addMenuPlan(username);
+
+    }
+
+    @RequestMapping(value = "/menuplan/{username}")
+    public List<String> getMenuPlan(@PathVariable("username") String username) {
+        return data_store_resource.getMenuPlan(username);
+
     }
 
     @RequestMapping(path = "/")
     public String hello() {
         return "Hello";
     }
+
 }

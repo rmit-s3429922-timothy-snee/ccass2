@@ -96,7 +96,7 @@ class MenuPlanSurvey extends React.Component {
 
     render() {
         return (
-            <Container>
+            <Container style={{"text-align":"left"}}>
                 <Header>New Menu Plan</Header>
                 <Segment>
                     <Header as={'h4'}>Dietary preferences</Header>

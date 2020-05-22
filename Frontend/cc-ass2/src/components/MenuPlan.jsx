@@ -70,7 +70,7 @@ class MenuPlan extends React.Component {
                     </Tab.Pane>
                 }
             )
-        ) : console.log("pong")
+        ) : ""
         return (
             <Container>
                 <Header> Menu Plan</Header>
