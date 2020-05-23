@@ -16,6 +16,7 @@ class MenuPlanSurvey extends React.Component {
 
     }
 
+
     handleCaloriePreference = (preference) => {
         this.setState({caloriePreference: preference})
     }
@@ -80,23 +81,15 @@ class MenuPlanSurvey extends React.Component {
             calorie:this.state.calorie
         }
         const menuPlan = await getMenuPlan(data)
-        let transformedMenuPlan =[]
-        for(let i=0; i< 7; i++){
-            let obj ={
-                Breakfast: menuPlan.Breakfast[i],
-                Lunch: menuPlan.Lunch[i],
-                Dinner: menuPlan.Dinner[i]
-            }
-            transformedMenuPlan.push(obj)
-        }
-        this.props.setMenuPlan(transformedMenuPlan)
+
+        this.props.setMenuPlan(menuPlan)
 
 
     }
 
     render() {
         return (
-            <Container>
+            <Container style={{"textAlign":"left"}}>
                 <Header>New Menu Plan</Header>
                 <Segment>
                     <Header as={'h4'}>Dietary preferences</Header>

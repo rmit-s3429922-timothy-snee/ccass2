@@ -48,15 +48,15 @@ const buildMealPlanQuery =(data, ID,KEY)=>{
     meals.forEach((meal)=>{
         let string = meal
         if(meal=== 'Breakfast'){
-            let query = `q=${string}&app_id=${ID}&app_key=${KEY}&to=${7}&diet=${data.dietaryPreference}${health}&calories=gte${data.calorie.breakfast.from},lte${data.calorie.breakfast.to}`
+            let query = `q=${string}&app_id=${ID}&app_key=${KEY}&to=${7}&diet=${data.dietaryPreference}${health}&calories=${data.calorie.breakfast.from}-${data.calorie.breakfast.to}`
             queries[meal]= query
         }
         else if(meal=== 'Lunch'){
-            let query = `q=${string}&app_id=${ID}&app_key=${KEY}&to=${7}&diet=${data.dietaryPreference}${health}&calories=gte${data.calorie.lunch.from},lte${data.calorie.lunch.to}`
+            let query = `q=${string}&app_id=${ID}&app_key=${KEY}&to=${7}&diet=${data.dietaryPreference}${health}&calories=${data.calorie.lunch.from}-${data.calorie.lunch.to}`
             queries[meal]= query
         }
         else if(meal=== 'Dinner'){
-            let query = `q=${string}&app_id=${ID}&app_key=${KEY}&to=${7}&diet=${data.dietaryPreference}${health}&calories=gte${data.calorie.dinner.from},lte${data.calorie.dinner.to}`
+            let query = `q=${string}&app_id=${ID}&app_key=${KEY}&to=${7}&diet=${data.dietaryPreference}${health}&calories=${data.calorie.dinner.from}-${data.calorie.dinner.to}`
             queries[meal]= query
         }
 
