@@ -7,7 +7,7 @@ import PantryService from "../services/PantryService";
 import RecipeList from "./RecipeList";
 
 function Home() {
-    const {loading, user} = useAuth0();
+    const {isAuthenticated, user} = useAuth0();
     const [state, setState] = useState({
         recipeSearch: "",
         recipeResult: {},
@@ -42,7 +42,6 @@ function Home() {
     }
 
     const handleSave = ()=>{
-
         MenuPlanService.addRecipe(user.nickname, state.recipeResult)
     }
 
@@ -104,9 +103,9 @@ function Home() {
                         </Placeholder> :
                         <Header textAlign={"center"}>{state.recipeResult.label}</Header>}
                     <Button.Group>
-                        <Button primary onClick={() => {
+                        {isAuthenticated &&(<Button primary onClick={() => {
                             handleSave()
-                        }}> Save</Button>
+                        }}> Save</Button>)}
                         <a href={state.recipeResult.url} target="_blank"><Button>Go to recipe</Button></a>
                     </Button.Group>
                 </Segment>)}
