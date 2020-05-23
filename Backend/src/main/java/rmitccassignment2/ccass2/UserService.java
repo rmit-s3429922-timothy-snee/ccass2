@@ -54,9 +54,8 @@ public class UserService {
     }
 
     @RequestMapping(value = "/menuplan/{username}")
-    public List<String> getMenuPlan(@PathVariable("username") String username) {
+    public List<Map<String,Object>>getMenuPlan(@PathVariable("username") String username) {
         return data_store_resource.getMenuPlan(username);
-
     }
 
     @RequestMapping(path = "/")

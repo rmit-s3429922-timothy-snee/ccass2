@@ -10,13 +10,49 @@ class MenuPlan extends React.Component {
     state = {
         menuSurvey: false,
         menuPlan: '',
-        rawMenuPlan:''
+        rawMenuPlan:'',
+        userMenuPlan: '',
     }
+    componentDidMount =  ()=> {
+        this.getMenuPlan()
+    }
+
+
+    getMenuPlan = async ()=>{
+         await MenuPlanService.getMenuPlan(localStorage.getItem("loggedInUser"))
+            .then((response) => {
+
+               if(response.data.length > 0){
+                   const list =response.data.map((meal)=>(
+                       {
+                           Breakfast:meal.breakfast,
+                           Lunch: meal.lunch,
+                           Dinner:meal.dinner
+                       }
+                   ))
+                   const transFormedList =[]
+                   list.forEach((plan)=>{
+
+                       transFormedList.push(this.transformMenuPlan(plan))
+                   })
+                   this.setState({userMenuPlan: transFormedList[0], menuPlans: transFormedList})
+               }
+
+        });;
+
+    }
+
     handleClick = () => {
+
         this.setState({menuSurvey: !this.state.menuSurvey})
     }
     setMenuPlan = (menuPlan) => {
+        let transformedMenuPlan = this.transformMenuPlan(menuPlan)
+        this.setState({menuPlan: transformedMenuPlan, rawMenuPlan: menuPlan})
+    }
+    transformMenuPlan =(menuPlan)=>{
         let transformedMenuPlan =[]
+
         for(let i=0; i< 7; i++){
             let obj ={
                 Breakfast: menuPlan.Breakfast[i],
@@ -25,11 +61,9 @@ class MenuPlan extends React.Component {
             }
             transformedMenuPlan.push(obj)
         }
-        this.setState({menuPlan: transformedMenuPlan, rawMenuPlan: menuPlan})
+        return transformedMenuPlan
     }
-
     handleSubmit = ()=>{
-
         const breakfast = this.state.rawMenuPlan.Breakfast.map((meal)=> (
             {
                 label: meal.recipe.label,
@@ -67,7 +101,6 @@ class MenuPlan extends React.Component {
             lunch: lunch,
             dinner: dinner,
         }
-        console.log()
         MenuPlanService.postMenuPlan(localStorage.getItem("loggedInUser"), obj)
     }
 
@@ -130,9 +163,70 @@ class MenuPlan extends React.Component {
                 }
             )
         ) : ""
+        const userMenuPlanPanes = this.state.userMenuPlan && (this.state.userMenuPlan.map(
+            (menu) => (
+                {
+
+                    menuItem: `Day ${this.state.userMenuPlan.indexOf(menu) +1 }`,
+                    render: () => <Tab.Pane>
+                        <Header as={'h3'}>Day {this.state.userMenuPlan.indexOf(menu) +1}</Header>
+                        <Card.Group itemsPerRow={3}>
+                            <Card>
+                                <Image src={menu.Breakfast.image} wrapped ui={false} />
+                                <Card.Content>
+                                    <Card.Header>Breakfast</Card.Header>
+
+                                    <Card.Description>
+                                        {menu.Breakfast.label}
+                                    </Card.Description>
+                                </Card.Content>
+                                <Card.Content extra>
+                                    <a href={menu.Breakfast.url} target="_blank"><Button>Go to recipe</Button></a>
+                                </Card.Content>
+
+                            </Card>
+                            <Card>
+                                <Image src={menu.Lunch.image} wrapped ui={false} />
+                                <Card.Content>
+                                    <Card.Header>Lunch</Card.Header>
+
+                                    <Card.Description>
+                                        {menu.Lunch.label}
+                                    </Card.Description>
+                                </Card.Content>
+                                <Card.Content extra>
+                                    <a href={menu.Lunch.url} target="_blank"><Button>Go to recipe</Button></a>
+                                </Card.Content>
+
+
+                            </Card>
+                            <Card>
+                                <Image src={menu.Dinner.image} wrapped ui={false} />
+                                <Card.Content>
+                                    <Card.Header>Dinner</Card.Header>
+
+                                    <Card.Description>
+                                        {menu.Dinner.label}
+                                    </Card.Description>
+                                </Card.Content>
+                                <Card.Content extra>
+                                    <a href={menu.Dinner.url} target="_blank"><Button>Go to recipe</Button></a>
+                                </Card.Content>
+
+
+                            </Card>
+                        </Card.Group>
+                    </Tab.Pane>
+                }
+            )
+        ))
+
         return (
             <Container>
                 <Header> Menu Plan</Header>
+                {this.state.userMenuPlan && (<Segment><Tab panes={userMenuPlanPanes}/>
+
+                </Segment>)}
                 <Button.Group>
                     <Button onClick={() => {
                         this.handleClick()

@@ -59,10 +59,10 @@ public class DataStoreResource {
         List<String> breakfastIds = addBreakfastRecipes(payload, key);
         List<Value<String>> breakfastListValues = convertToValueList(breakfastIds);
 
-        List<String> lunchIdsList = addBreakfastRecipes(payload, key);
+        List<String> lunchIdsList = addLunchRecipes(payload, key);
         List<Value<String>> lunchValues = convertToValueList(lunchIdsList);
 
-        List<String> dinnerIdsList = addBreakfastRecipes(payload, key);
+        List<String> dinnerIdsList = addDinnerRecipes(payload, key);
         List<Value<String>> dinnerValues = convertToValueList(dinnerIdsList);
 
         Entity menuPlan = Entity.newBuilder(key)
@@ -84,7 +84,7 @@ public class DataStoreResource {
             Key recipeKey = datastore.allocateId(recipeKeyFactory.newKey());
             Entity menuPlan = Entity.newBuilder(recipeKey)
             .set("id", recipeKey.getId().toString())
-            .set("menuPlanId", menuPlanKey.toString())
+            .set("menuPlanId", menuPlanKey.getId().toString())
             .set("label", payload.breakfast.get(i).label)
             .set("image", payload.breakfast.get(i).image)
             .set("url", payload.breakfast.get(i).url)
@@ -105,7 +105,7 @@ public class DataStoreResource {
             Key recipeKey = datastore.allocateId(recipeKeyFactory.newKey());
             Entity menuPlan = Entity.newBuilder(recipeKey)
             .set("id", recipeKey.getId().toString())
-            .set("menuPlanId", menuPlanKey.toString())
+            .set("menuPlanId", menuPlanKey.getId().toString())
             .set("label", payload.lunch.get(i).label)
             .set("image", payload.lunch.get(i).image)
             .set("url", payload.lunch.get(i).url)
@@ -126,7 +126,7 @@ public class DataStoreResource {
             Key recipeKey = datastore.allocateId(recipeKeyFactory.newKey());
             Entity menuPlan = Entity.newBuilder(recipeKey)
             .set("id", recipeKey.getId().toString())
-            .set("menuPlanId", menuPlanKey.toString())
+            .set("menuPlanId", menuPlanKey.getId().toString())
             .set("label", payload.dinner.get(i).label)
             .set("image", payload.dinner.get(i).image)
             .set("url", payload.dinner.get(i).url)
@@ -148,21 +148,63 @@ public class DataStoreResource {
     
         return result;
     }
-    public  List<String> getMenuPlan(String userId) {
+    public  List<Map<String,Object>> getMenuPlan(String userId) {
     
         Query<Entity> query =Query.newEntityQueryBuilder().setKind("MenuPlan").setFilter(PropertyFilter.eq("userId", userId)).build();
         Iterator<Entity> tasks = datastore.run(query);
-        List<String> strings = new ArrayList<>();
+
+        List<Map<String,Object>> mapList = new ArrayList<Map<String,Object>>();
         while (tasks.hasNext()) {
-          Entity task = tasks.next();
-        
+          Entity task = tasks.next();      
           if (task.getString("userId").equals(userId)) {
-            strings.add(
-                task.getKey().getId().toString());
+
+             Map<String,Object> map = new HashMap<>();
+             map.put("id",task.getString("id"));
+             map.put("userId", task.getString("userId"));
+             map.put("timeStamp", task.getTimestamp("timeStamp").toDate());
+             List<Map<String,Object>> breakfast= generateRecipeList(task.getList("breakfast"));
+             List<Map<String,Object>> lunch= generateRecipeList(task.getList("lunch"));
+             List<Map<String,Object>> dinner =  generateRecipeList(task.getList("dinner"));
+             map.put("breakfast", breakfast);
+             map.put("lunch", lunch);
+             map.put("dinner", dinner);
+             mapList.add(map);
+     
           } 
         }
-        return strings;
-    }  
+        return mapList;
+    }
+    
+    public List<Map<String,Object>> generateRecipeList( List<Value<?>> entityList ){
+
+
+        List<Map<String,Object>> mapList = new ArrayList<Map<String,Object>>();
+        for(int i =0; i< entityList.size(); i++){
+            String value =(String) entityList.get(i).get();
+
+            Query<Entity> query =Query.newEntityQueryBuilder().setKind("Recipes").setFilter(PropertyFilter.eq("id", value)).build();
+            Iterator<Entity> tasks = datastore.run(query);
+    
+          
+            while (tasks.hasNext()) {
+              Entity task = tasks.next();      
+              
+              Map<String,Object> map = new HashMap<>();
+              map.put("id",task.getString("id"));
+              map.put("calories", task.getString("calories"));
+              map.put("image", task.getString("image"));
+              map.put("label", task.getString("label"));
+              map.put("url", task.getString("url"));
+              map.put("yield", task.getString("yield"));
+
+              mapList.add(map);
+              
+            }
+        }
+        return mapList;
+
+
+    }   
 
 }
 

@@ -3,8 +3,8 @@ import axios from "axios";
 const API_URL = "http://localhost:8080";
 
 class MenuPlanService {
-    retrievePantryItems(username) {
-        return axios.get(`${API_URL}/user/${username}`);
+    getMenuPlan(username) {
+        return axios.get(`${API_URL}/menuplan/${username}`);
     }
 
     async postMenuPlan(username, recipes) {
