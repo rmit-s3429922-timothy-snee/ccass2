@@ -26,33 +26,34 @@ class RecipeList extends React.Component {
 
     render() {
         return (
-            <Segment>
-                <Card.Group>
-                    {
-                        this.state.recipes.length > 0 ? (this.state.recipes.map(recipe =>
+            <>
+                { this.state.recipes.length > 0 ?<Segment>
+                    <Card.Group>
+                        {
+                            (this.state.recipes.map(recipe =>
 
-                            <Card>
-                                <Image src={recipe.image} wrapped ui={false}/>
-                                <Card.Content>
-                                    <Card.Header>{recipe.label}</Card.Header>
-                                    <Card.Meta>Serves: {recipe.yield}</Card.Meta>
-                                    <Card.Description>
-                                        Total Calories:{parseInt(recipe.calories)}<br/>
-                                        Calories per serve:{ parseInt(recipe.calories)/parseInt(recipe.yield)}
-                                    </Card.Description>
-                                </Card.Content>
-                                <Card.Content extra>
-                                    <a href={recipe.url} target="_blank"><Button>Go to
-                                        recipe</Button></a>
-                                </Card.Content>
+                                <Card>
+                                    <Image src={recipe.image} wrapped ui={false}/>
+                                    <Card.Content>
+                                        <Card.Header>{recipe.label}</Card.Header>
+                                        <Card.Meta>Serves: {recipe.yield}</Card.Meta>
+                                        <Card.Description>
+                                            Total Calories:{parseInt(recipe.calories)}<br/>
+                                            Calories per serve:{parseInt(recipe.calories) / parseInt(recipe.yield)}
+                                        </Card.Description>
+                                    </Card.Content>
+                                    <Card.Content extra>
+                                        <a href={recipe.url} target="_blank"><Button>Go to
+                                            recipe</Button></a>
+                                    </Card.Content>
 
-                            </Card>
-                        )) : ""
-                    }
+                                </Card>
+                            ))
+                        }
 
-                </Card.Group>
-            </Segment>
-
+                    </Card.Group>
+                </Segment>:""}
+            </>
         )
 
 
