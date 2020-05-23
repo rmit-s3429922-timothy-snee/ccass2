@@ -6,8 +6,10 @@ import { useAuth0 } from "../react-auth0-spa";
 const NavBar = () => 
 {
     
-    const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
-    console.log(useAuth0())
+    const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
+    const saveUserName =()=>{
+        localStorage.setItem("loggedInUser", user.nickname)
+    }
     return (
         <div>
             <Menu size='large'>
@@ -18,7 +20,7 @@ const NavBar = () =>
                         isAuthenticated && (
                             <>
                             <Menu.Item><Link to={'/profile'} className="nav-link">Profile</Link></Menu.Item>
-                            <Menu.Item><Link to={'/menuPlan'} className="nav-link">Menu plan</Link></Menu.Item>
+                            <Menu.Item onClick={()=>{saveUserName()}}><Link to={'/menuPlan'} className="nav-link">Menu plan</Link></Menu.Item>
                             <Menu.Item><Link to={'/pantry'} className="nav-link">Pantry</Link></Menu.Item>
                             </>
                         )

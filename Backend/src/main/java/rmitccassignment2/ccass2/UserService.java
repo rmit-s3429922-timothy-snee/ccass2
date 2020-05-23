@@ -47,9 +47,9 @@ public class UserService {
         bucket.create(username + ".json", pantry.getBytes("UTF-8"));
     }
 
-    @RequestMapping(value = "/newmenuplan/{username}")
-    public Long addNewMenuPlan(@PathVariable("username") String username) {
-        return data_store_resource.addMenuPlan(username);
+    @RequestMapping(value = "/newmenuplan/{username}", method=RequestMethod.POST)
+    public Long addNewMenuPlan(@PathVariable("username") String username, @RequestBody MenuPlanRecipes payload) {
+        return data_store_resource.addMenuPlan(username, payload);
 
     }
 

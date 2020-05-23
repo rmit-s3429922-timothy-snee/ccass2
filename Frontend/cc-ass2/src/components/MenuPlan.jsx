@@ -1,23 +1,82 @@
 import React from 'react';
 import {Container, Header, Button, Segment, Tab, Card, Image} from "semantic-ui-react";
 import MenuPlanSurvey from "./MenuPlanSurvey";
+import MenuPlanService from "../services/MenuPlanService";
+import {useAuth0} from "../react-auth0-spa";
+
 
 class MenuPlan extends React.Component {
+
     state = {
         menuSurvey: false,
-        menuPlan: ''
+        menuPlan: '',
+        rawMenuPlan:''
     }
     handleClick = () => {
         this.setState({menuSurvey: !this.state.menuSurvey})
     }
     setMenuPlan = (menuPlan) => {
-        this.setState({menuPlan})
+        let transformedMenuPlan =[]
+        for(let i=0; i< 7; i++){
+            let obj ={
+                Breakfast: menuPlan.Breakfast[i],
+                Lunch: menuPlan.Lunch[i],
+                Dinner: menuPlan.Dinner[i]
+            }
+            transformedMenuPlan.push(obj)
+        }
+        this.setState({menuPlan: transformedMenuPlan, rawMenuPlan: menuPlan})
+    }
+
+    handleSubmit = ()=>{
+
+        const breakfast = this.state.rawMenuPlan.Breakfast.map((meal)=> (
+            {
+                label: meal.recipe.label,
+                image: meal.recipe.image,
+                url: meal.recipe.url,
+                calories: meal.recipe.calories,
+                yield: meal.recipe.yield
+
+            }
+        ))
+        const lunch = this.state.rawMenuPlan.Lunch.map((meal)=> (
+            {
+                label: meal.recipe.label,
+                image: meal.recipe.image,
+                url: meal.recipe.url,
+                calories: meal.recipe.calories,
+                yield: meal.recipe.yield
+
+            }
+        ))
+
+        const dinner = this.state.rawMenuPlan.Dinner.map((meal)=> (
+            {
+                label: meal.recipe.label,
+                image: meal.recipe.image,
+                url: meal.recipe.url,
+                calories: meal.recipe.calories,
+                yield: meal.recipe.yield
+
+            }
+        ))
+
+        let obj ={
+            breakfast: breakfast,
+            lunch: lunch,
+            dinner: dinner,
+        }
+        console.log()
+        MenuPlanService.postMenuPlan(localStorage.getItem("loggedInUser"), obj)
     }
 
     render() {
+        // const { user } = useAuth0();
         const panes = this.state.menuPlan ? this.state.menuPlan.map(
             (menu) => (
                 {
+
                     menuItem: `Day ${this.state.menuPlan.indexOf(menu) +1 }`,
                     render: () => <Tab.Pane>
                         <Header as={'h3'}>Day {this.state.menuPlan.indexOf(menu) +1}</Header>
@@ -87,7 +146,9 @@ class MenuPlan extends React.Component {
                         <MenuPlanSurvey setMenuPlan={this.setMenuPlan}/>
                     </Segment>)}
 
-                {this.state.menuPlan && (<Segment><Tab panes={panes}/></Segment>)}
+                {this.state.menuPlan && (<Segment><Tab panes={panes}/>
+                <Button onClick={()=>{this.handleSubmit()}}>Save</Button>
+                </Segment>)}
 
             </Container>
         )
