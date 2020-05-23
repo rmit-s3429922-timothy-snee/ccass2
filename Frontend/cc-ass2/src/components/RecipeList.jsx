@@ -28,6 +28,7 @@ class RecipeList extends React.Component {
         return (
             <>
                 { this.state.recipes.length > 0 ?<Segment>
+                    <Header>Saved Recipes</Header>
                     <Card.Group>
                         {
                             (this.state.recipes.map(recipe =>
