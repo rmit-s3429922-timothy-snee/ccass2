@@ -52,6 +52,15 @@ public class UserService {
         return data_store_resource.addMenuPlan(username, payload);
 
     }
+    @RequestMapping(value = "/addRecipe/{username}", method=RequestMethod.POST)
+    public Long addRecipe(@PathVariable("username") String username, @RequestBody Recipes payload) {
+        return data_store_resource.addRecipe(username, payload);
+
+    }
+    @RequestMapping(value = "/getRecipes/{username}")
+    public List<Map<String,Object>>getRecipes(@PathVariable("username") String username) {
+        return data_store_resource.getUserRecipes(username);
+    }
 
     @RequestMapping(value = "/menuplan/{username}")
     public List<Map<String,Object>>getMenuPlan(@PathVariable("username") String username) {

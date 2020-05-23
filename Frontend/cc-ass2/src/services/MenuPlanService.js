@@ -13,6 +13,18 @@ class MenuPlanService {
                 console.log(response);
             })
     }
+
+    getRecipe(username) {
+        return axios.get(`${API_URL}/getRecipes/${username}`);
+    }
+
+    async addRecipe(username, recipe) {
+        axios.post(`${API_URL}/addRecipe/${username}`, recipe)
+            .then(function(response) {
+                console.log(response);
+            })
+    }
+
 }
 
 export default new MenuPlanService();

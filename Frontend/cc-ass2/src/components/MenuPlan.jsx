@@ -38,7 +38,7 @@ class MenuPlan extends React.Component {
                    this.setState({userMenuPlan: transFormedList[0], menuPlans: transFormedList})
                }
 
-        });;
+        });
 
     }
 
@@ -121,6 +121,9 @@ class MenuPlan extends React.Component {
 
                                 <Card.Description>
                                     {menu.Breakfast.recipe.label}
+                                    <br/>
+                                        Total Calories:{parseInt(menu.Breakfast.recipe.calories)}<br/>
+                                        Calories per serve:{ parseInt(menu.Breakfast.recipe.calories)/parseInt(menu.Breakfast.recipe.yield)}
                                 </Card.Description>
                             </Card.Content>
                             <Card.Content extra>
@@ -133,8 +136,12 @@ class MenuPlan extends React.Component {
                             <Card.Content>
                                 <Card.Header>Lunch</Card.Header>
 
+
                                 <Card.Description>
                                     {menu.Lunch.recipe.label}
+                                    <br/>
+                                    Total Calories:{parseInt(menu.Lunch.recipe.calories)}<br/>
+                                    Calories per serve:{ parseInt(menu.Lunch.recipe.calories)/parseInt(menu.Lunch.recipe.yield)}
                                 </Card.Description>
                             </Card.Content>
                             <Card.Content extra>
@@ -148,8 +155,12 @@ class MenuPlan extends React.Component {
                             <Card.Content>
                                 <Card.Header>Dinner</Card.Header>
 
+
                                 <Card.Description>
                                     {menu.Dinner.recipe.label}
+                                    <br/>
+                                    Total Calories:{parseInt(menu.Dinner.recipe.calories)}<br/>
+                                    Calories per serve:{ parseInt(menu.Dinner.recipe.calories)/parseInt(menu.Dinner.recipe.yield)}
                                 </Card.Description>
                             </Card.Content>
                             <Card.Content extra>
@@ -178,6 +189,9 @@ class MenuPlan extends React.Component {
 
                                     <Card.Description>
                                         {menu.Breakfast.label}
+                                        <br/>
+                                        Total Calories:{parseInt(menu.Breakfast.calories)}<br/>
+                                        Calories per serve:{ parseInt(menu.Breakfast.calories)/parseInt(menu.Breakfast.yield)}
                                     </Card.Description>
                                 </Card.Content>
                                 <Card.Content extra>
@@ -192,6 +206,9 @@ class MenuPlan extends React.Component {
 
                                     <Card.Description>
                                         {menu.Lunch.label}
+                                        <br/>
+                                        Total Calories:{parseInt(menu.Lunch.calories)}<br/>
+                                        Calories per serve:{ parseInt(menu.Lunch.calories)/parseInt(menu.Lunch.yield)}
                                     </Card.Description>
                                 </Card.Content>
                                 <Card.Content extra>
@@ -204,9 +221,11 @@ class MenuPlan extends React.Component {
                                 <Image src={menu.Dinner.image} wrapped ui={false} />
                                 <Card.Content>
                                     <Card.Header>Dinner</Card.Header>
-
                                     <Card.Description>
                                         {menu.Dinner.label}
+                                        <br/>
+                                        Total Calories:{parseInt(menu.Dinner.calories)}<br/>
+                                        Calories per serve:{ parseInt(menu.Dinner.calories)/parseInt(menu.Dinner.yield)}
                                     </Card.Description>
                                 </Card.Content>
                                 <Card.Content extra>
@@ -227,14 +246,9 @@ class MenuPlan extends React.Component {
                 {this.state.userMenuPlan && (<Segment><Tab panes={userMenuPlanPanes}/>
 
                 </Segment>)}
-                <Button.Group>
-                    <Button onClick={() => {
-                        this.handleClick()
-                    }}>New menu plan</Button>
-                    <Button onClick={() => {
-                        console.log(this.state)
-                    }}>View menu</Button>
-                </Button.Group>
+                <Button onClick={() => {
+                    this.handleClick()
+                }}>New menu plan</Button>
                 {this.state.menuSurvey && (
                     <Segment>
                         <MenuPlanSurvey setMenuPlan={this.setMenuPlan}/>

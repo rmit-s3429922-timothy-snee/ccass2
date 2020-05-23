@@ -76,6 +76,49 @@ public class DataStoreResource {
         datastore.put(menuPlan);
         return key.getId();
     }
+    public Long addRecipe(String userId, Recipes payload){
+        Key key = datastore.allocateId(recipeKeyFactory.newKey());
+        Entity recipe = Entity.newBuilder(key)
+        .set("id", key.getId().toString())
+        .set("label", payload.label)
+        .set("userId", userId)
+        .set("image", payload.image)
+        .set("url", payload.url)
+        .set("calories", payload.calories)
+        .set("yield", payload.yield)
+        .build();
+        datastore.put(recipe);
+        return key.getId();
+    }
+
+     public List<Map<String,Object>> getUserRecipes (String userId){
+
+
+        List<Map<String,Object>> mapList = new ArrayList<Map<String,Object>>();
+        Query<Entity> query =Query.newEntityQueryBuilder().setKind("Recipes").setFilter(
+            PropertyFilter.eq("userId", userId)).build();
+        Iterator<Entity> tasks = datastore.run(query);
+
+      
+        while (tasks.hasNext()) {
+          Entity task = tasks.next();      
+          
+          Map<String,Object> map = new HashMap<>();
+          map.put("id",task.getString("id"));
+          map.put("userId",task.getString("userId"));
+          map.put("calories", task.getString("calories"));
+          map.put("image", task.getString("image"));
+          map.put("label", task.getString("label"));
+          map.put("url", task.getString("url"));
+          map.put("yield", task.getString("yield"));
+
+          mapList.add(map);
+          
+        }
+        return mapList;
+
+
+    } 
     public List<String> addBreakfastRecipes(MenuPlanRecipes payload, Key menuPlanKey){
         List<String> breakfast = new ArrayList<String>();
         for(int i=0; i< payload.breakfast.size(); i++)
