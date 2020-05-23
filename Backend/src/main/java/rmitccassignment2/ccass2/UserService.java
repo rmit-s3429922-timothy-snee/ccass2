@@ -5,14 +5,12 @@ import java.io.UnsupportedEncodingException;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Bucket;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin(origins = { "http://localhost:3000" })
 @RestController
 public class UserService {
 
@@ -38,12 +36,7 @@ public class UserService {
         BucketResource bucket_resource = new BucketResource();
         Bucket bucket = bucket_resource.getBucket();
         System.out.println(pantry);
-        
-        bucket.create(username + ".json", pantry.getBytes("UTF-8"));
-    }
 
-    @RequestMapping(path = "/")
-    public String hello() {
-        return "Hello";
+        bucket.create(username + ".json", pantry.getBytes("UTF-8"));
     }
 }
