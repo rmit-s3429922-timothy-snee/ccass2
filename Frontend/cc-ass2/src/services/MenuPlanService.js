@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080";
+const API_URL = "http://34.87.203.154/";
 
 class MenuPlanService {
     getMenuPlan(username) {
