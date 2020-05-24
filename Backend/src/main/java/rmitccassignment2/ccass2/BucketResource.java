@@ -1,6 +1,5 @@
 package rmitccassignment2.ccass2;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -16,8 +15,9 @@ public class BucketResource {
 
     public BucketResource() {
         try {
+            System.out.println(System.getProperty("user.dir"));
             Credentials creds = GoogleCredentials
-                    .fromStream(new FileInputStream("CloudComputingAss2-3e00f0ff550f.json"));
+                    .fromStream(this.getClass().getResourceAsStream("/CloudComputingAss2-3e00f0ff550f.json"));
             Storage storage = StorageOptions.newBuilder().setCredentials(creds).setProjectId("s3429922-s3621713-ccass2")
                     .build().getService();
             this.bucket = storage.get("ccass2-bucket");

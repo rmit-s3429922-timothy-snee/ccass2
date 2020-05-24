@@ -4,8 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
 
-import com.google.cloud.datastore.Entity;
-import com.google.cloud.datastore.QueryResults;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Bucket;
 
@@ -22,7 +20,7 @@ public class UserService {
 
     BucketResource bucket_resource;
     Bucket bucket;
-    DataStoreResource data_store_resource = new DataStoreResource();
+    DataStoreResource data_store_resource;
 
     @RequestMapping(path = "/user/{username}")
     public String getPantry(@PathVariable("username") String username) {
@@ -47,23 +45,29 @@ public class UserService {
         bucket.create(username + ".json", pantry.getBytes("UTF-8"));
     }
 
-    @RequestMapping(value = "/newmenuplan/{username}", method=RequestMethod.POST)
+    @RequestMapping(value = "/newmenuplan/{username}", method = RequestMethod.POST)
     public Long addNewMenuPlan(@PathVariable("username") String username, @RequestBody MenuPlanRecipes payload) {
+        data_store_resource = new DataStoreResource();
         return data_store_resource.addMenuPlan(username, payload);
 
     }
-    @RequestMapping(value = "/addRecipe/{username}", method=RequestMethod.POST)
+
+    @RequestMapping(value = "/addRecipe/{username}", method = RequestMethod.POST)
     public Long addRecipe(@PathVariable("username") String username, @RequestBody Recipes payload) {
+        data_store_resource = new DataStoreResource();
         return data_store_resource.addRecipe(username, payload);
 
     }
+
     @RequestMapping(value = "/getRecipes/{username}")
-    public List<Map<String,Object>>getRecipes(@PathVariable("username") String username) {
+    public List<Map<String, Object>> getRecipes(@PathVariable("username") String username) {
+        data_store_resource = new DataStoreResource();
         return data_store_resource.getUserRecipes(username);
     }
 
     @RequestMapping(value = "/menuplan/{username}")
-    public List<Map<String,Object>>getMenuPlan(@PathVariable("username") String username) {
+    public List<Map<String, Object>> getMenuPlan(@PathVariable("username") String username) {
+        data_store_resource = new DataStoreResource();
         return data_store_resource.getMenuPlan(username);
     }
 
