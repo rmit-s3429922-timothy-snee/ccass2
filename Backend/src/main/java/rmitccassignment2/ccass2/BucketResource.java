@@ -3,7 +3,7 @@ package rmitccassignment2.ccass2;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import com.google.auth.Credentials;
+import com.google.auth.appengine.AppEngineCredentials;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.Bucket;
 import com.google.cloud.storage.Storage;
@@ -16,8 +16,7 @@ public class BucketResource {
     public BucketResource() {
         try {
             System.out.println(System.getProperty("user.dir"));
-            Credentials creds = GoogleCredentials
-                    .fromStream(this.getClass().getResourceAsStream("/CloudComputingAss2-3e00f0ff550f.json"));
+            GoogleCredentials creds = AppEngineCredentials.getApplicationDefault();
             Storage storage = StorageOptions.newBuilder().setCredentials(creds).setProjectId("s3429922-s3621713-ccass2")
                     .build().getService();
             this.bucket = storage.get("ccass2-bucket");

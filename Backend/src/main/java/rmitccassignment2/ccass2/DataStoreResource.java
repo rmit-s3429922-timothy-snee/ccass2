@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.google.auth.Credentials;
+import com.google.auth.appengine.AppEngineCredentials;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.Timestamp;
 import com.google.cloud.datastore.Datastore;
@@ -35,9 +35,7 @@ public class DataStoreResource {
     DataStoreResource() {
 
         try {
-            Credentials creds = GoogleCredentials
-                    .fromStream(this.getClass().getResourceAsStream("/CloudComputingAss2-d492cad86011.json"));
-
+            GoogleCredentials creds = AppEngineCredentials.getApplicationDefault();
             this.datastore = DatastoreOptions.newBuilder().setCredentials(creds)
                     .setProjectId("s3429922-s3621713-ccass2").build().getService();
         } catch (final FileNotFoundException e) {
